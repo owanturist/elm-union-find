@@ -2,7 +2,7 @@ module Tests exposing (quickUnionPathCompression)
 
 import Expect exposing (Expectation)
 import Test exposing (Test, describe, test)
-import UnionFind
+import UnionFind exposing (UnionFind)
 
 
 quickUnionPathCompression : Test
@@ -183,4 +183,39 @@ quickUnionPathCompression =
                             , UnionFind.get 4 >> Expect.equal 4
                             ]
             ]
+        , test "example from https://algs4.cs.princeton.edu/15uf/" <|
+            \() ->
+                let
+                    getState : UnionFind Int -> List Int
+                    getState uf =
+                        List.map
+                            (\id -> UnionFind.get id uf)
+                            (List.range 0 9)
+
+                    step : ( Int, Int, List Int ) -> ( UnionFind Int, List (List Int), List (List Int) ) -> ( UnionFind Int, List (List Int), List (List Int) )
+                    step ( left, right, expectation ) ( uf, accResult, accExpect ) =
+                        let
+                            nextUF =
+                                UnionFind.union left right uf
+                        in
+                        ( nextUF, getState nextUF :: accResult, expectation :: accExpect )
+
+                    ( _, result, expect ) =
+                        [ ( 4, 3, [ 0, 1, 2, 3, 3, 5, 6, 7, 8, 9 ] )
+                        , ( 3, 8, [ 0, 1, 2, 8, 3, 5, 6, 7, 8, 9 ] )
+                        , ( 6, 5, [ 0, 1, 2, 8, 3, 5, 5, 7, 8, 9 ] )
+                        , ( 9, 4, [ 0, 1, 2, 8, 8, 5, 5, 7, 8, 8 ] )
+                        , ( 2, 1, [ 0, 1, 1, 8, 8, 5, 5, 7, 8, 8 ] )
+                        , ( 8, 9, [ 0, 1, 1, 8, 8, 5, 5, 7, 8, 8 ] )
+                        , ( 5, 0, [ 0, 1, 1, 8, 8, 0, 5, 7, 8, 8 ] )
+                        , ( 7, 2, [ 0, 1, 1, 8, 8, 0, 5, 1, 8, 8 ] )
+                        , ( 6, 1, [ 1, 1, 1, 8, 8, 0, 0, 1, 8, 8 ] )
+                        , ( 1, 0, [ 1, 1, 1, 8, 8, 0, 0, 1, 8, 8 ] )
+                        , ( 6, 7, [ 1, 1, 1, 8, 8, 0, 1, 1, 8, 8 ] )
+                        , ( 5, 9, [ 1, 8, 1, 8, 8, 1, 1, 1, 8, 8 ] )
+                        ]
+                            |> List.reverse
+                            |> List.foldr step ( UnionFind.quickUnionPathCompression, [], [] )
+                in
+                Expect.equal result expect
         ]
