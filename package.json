@@ -1,0 +1,26 @@
+{
+  "name": "elm-union-find",
+  "version": "0.0.0",
+  "description": "The Union Find data structure",
+  "scripts": {
+    "test": "elm-test tests/**/*.elm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owanturist/elm-union-find.git"
+  },
+  "keywords": [
+    "elm",
+    "algorithms",
+    "union-find"
+  ],
+  "author": "Anton Ovechkin <owanturist@gmail.com>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/owanturist/elm-union-find/issues"
+  },
+  "homepage": "https://github.com/owanturist/elm-union-find#readme",
+  "dependencies": {
+    "elm-test": "^0.19.0-rev6"
+  }
+}
