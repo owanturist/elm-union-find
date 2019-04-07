@@ -177,3 +177,4 @@ findCompressed id dict =
                         findCompressed cursor dict
                 in
                 ( parent, Dict.insert id parent nextDict )
+
